@@ -28,16 +28,21 @@ describe('authenticate account is valid', function () {
     });
 
     it('should send notification with account and status when invalid', () => {
+        when_invalid('joey');
+        should_send_notification("joey", "login failed");
+    });
+
+    function should_send_notification(account, status) {
+        expect(fake_send.mock.calls[0][0]).toEqual(
+            expect.stringContaining(account) && expect.stringContaining(status)
+        );
+    }
+
+    function when_invalid(account) {
         given_password("91");
         given_token('000000');
-        authentication.is_valid('joey', 'wrong password');
-
-        // expect(fake_send.mock.calls[0][0]).toBe("account:joey try to login failed");
-        expect(fake_send.mock.calls[0][0]).toEqual(
-            expect.stringContaining("joey") && expect.stringContaining("login failed")
-            // "account:joey try to login failed"
-        );
-    });
+        authentication.is_valid(account, 'wrong password');
+    }
 
     function should_be_invalid(account, password) {
         expect(authentication.is_valid(account, password)).toBe(false);
