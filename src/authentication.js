@@ -11,8 +11,13 @@ export class Authentication {
         if (valid_password === password) {
             return true;
         } else {
+            this.send(`account:${account} try to login failed`);
             return false;
         }
+    }
+
+    send(message) {
+        console.log(message);
     }
 
     get_token() {
