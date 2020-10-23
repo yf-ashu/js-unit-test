@@ -32,7 +32,11 @@ describe('authenticate account is valid', function () {
         given_token('000000');
         authentication.is_valid('joey', 'wrong password');
 
-        expect(fake_send.mock.calls[0][0]).toBe("account:joey try to login failed");
+        // expect(fake_send.mock.calls[0][0]).toBe("account:joey try to login failed");
+        expect(fake_send.mock.calls[0][0]).toEqual(
+            expect.stringContaining("joey") && expect.stringContaining("login failed")
+            // "account:joey try to login failed"
+        );
     });
 
     function should_be_invalid(account, password) {

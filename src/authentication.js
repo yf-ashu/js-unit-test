@@ -11,7 +11,7 @@ export class Authentication {
         if (valid_password === password) {
             return true;
         } else {
-            this.send(`account:${account} try to login failed`);
+            this.send(`account:${account} try to login failed.`);
             return false;
         }
     }
