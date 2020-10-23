@@ -1,16 +1,35 @@
 import {Authentication} from "../src/authentication";
 
 describe('authenticate account is valid', function () {
-    it('should be valid', () => {
-        let authentication = new Authentication();
-        const fake_get_password = jest.fn();
-        fake_get_password.mockReturnValueOnce("91");
+    let authentication = new Authentication();
+    let fake_get_password;
+    let fake_get_token;
+    beforeEach(() => {
+        authentication = new Authentication();
+
+        fake_get_password = jest.fn();
         authentication.get_password = fake_get_password;
 
-        const fake_get_token = jest.fn();
-        fake_get_token.mockReturnValueOnce('000000');
+        fake_get_token = jest.fn();
         authentication.get_token = fake_get_token;
-
-        expect(authentication.is_valid('joey', '91000000')).toBe(true);
     });
+
+    it('should be valid', () => {
+        given_password("91");
+        given_token('000000');
+        should_be_valid('joey', '91000000');
+    });
+
+    function given_password(password) {
+        fake_get_password.mockReturnValueOnce(password);
+    }
+
+    function given_token(token) {
+        fake_get_token.mockReturnValueOnce(token);
+    }
+
+    function should_be_valid(account, password) {
+        expect(authentication.is_valid(account, password)).toBe(true);
+    }
+
 });
