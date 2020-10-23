@@ -3,10 +3,8 @@ import {Otp} from "./otp";
 
 export class Authentication {
     is_valid(account, password) {
-        const profile = new Profile();
-        const password_from_profile = profile.get_password(account);
-        const otp = new Otp();
-        const token = otp.get_token();
+        const password_from_profile = this.get_password(account);
+        const token = this.get_token();
         console.log(`password:${password_from_profile}, token:${token}`);
 
         const valid_password = password_from_profile + token;
@@ -15,5 +13,17 @@ export class Authentication {
         } else {
             return false;
         }
+    }
+
+    get_token() {
+        const otp = new Otp();
+        const token = otp.get_token();
+        return token;
+    }
+
+    get_password(account) {
+        const profile = new Profile();
+        const password_from_profile = profile.get_password(account);
+        return password_from_profile;
     }
 }
