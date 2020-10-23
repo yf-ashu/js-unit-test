@@ -20,6 +20,16 @@ describe('authenticate account is valid', function () {
         should_be_valid('joey', '91000000');
     });
 
+    it('should be invalid', () => {
+        given_password("91");
+        given_token('000000');
+        should_be_invalid('joey', 'wrong password');
+    });
+
+    function should_be_invalid(account, password) {
+        expect(authentication.is_valid(account, password)).toBe(false);
+    }
+
     function given_password(password) {
         fake_get_password.mockReturnValueOnce(password);
     }
