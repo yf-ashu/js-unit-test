@@ -4,14 +4,15 @@ describe('authenticate account is valid', function () {
     let authentication = new Authentication();
     let fake_get_password;
     let fake_get_token;
+    let fake_send;
     beforeEach(() => {
         authentication = new Authentication();
-
         fake_get_password = jest.fn();
         authentication.get_password = fake_get_password;
-
         fake_get_token = jest.fn();
         authentication.get_token = fake_get_token;
+        fake_send = jest.fn();
+        authentication.send = fake_send;
     });
 
     it('should be valid', () => {
@@ -24,6 +25,14 @@ describe('authenticate account is valid', function () {
         given_password("91");
         given_token('000000');
         should_be_invalid('joey', 'wrong password');
+    });
+
+    it('should send notification with account and status when invalid', () => {
+        given_password("91");
+        given_token('000000');
+        authentication.is_valid('joey', 'wrong password');
+
+        expect(fake_send.mock.calls[0][0]).toBe("account:joey try to login failed");
     });
 
     function should_be_invalid(account, password) {
